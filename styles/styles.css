@@ -1,2 +1,48 @@
 .logo {
     width:90px;
+    display: inline;
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+li a:hover {
+    background-color: rgb(200, 198, 198);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px;
+    background-color: rgb(230, 227, 227);
+}
+.connexion {
+    padding: 15px 20px;
+    background-color: rgb(247, 163, 6);
+    border-radius: 10px;
+    border: none;
+    color: white;
+}
+.connexion:hover {
+    background-color: rgb(255, 140, 0);
+    cursor: pointer;
+    color: black;
+}
