@@ -1,76 +1,41 @@
-body{
-    background-color: rgb(230, 227, 227);
-}
-.logo {
-    width:90px;
-    display: inline;
-}
-
-ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    border-radius: 12px;
-}
-
-li a:hover {
-    background-color: rgb(200, 198, 198);
-}
-
-nav {
+nav{
+    height: 15vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 25px;
-}
-.connexion {
-    padding: 15px 20px;
-    background-color: rgb(247, 163, 6);
-    border-radius: 10px;
-    border: none;
-    color: white;
-}
-.connexion:hover {
-    background-color: rgb(255, 140, 0);
-    cursor: pointer;
-    color: black;
-}
-header {
-    border-bottom: #e9e5e5 3px solid;
 }
 
-.search-container {
-    display: flex;
+.container{
+    height: 85vh;
+    width: 100%;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
-    padding-right:40% ;
-    background-color: white;
-    width: max-content;
+}
+
+.connexion{
     margin-left: auto;
-    margin-right: auto;
-    margin: 60px auto;
+    margin-right: 20px;
 }
 
-.search-input, .search-icon {
-    border: none;
-    outline: none;
-    margin-left: 8px;
-    font-size: 20px;
-    color: #333333;
-    border-radius: 10px;
+.nav-left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+}
+.nav-right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+}
+.nav-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+button{
+    margin-left: 5%;
 }
 
 /* From Uiverse.io by andrew-demchenk0 */ 
@@ -168,6 +133,35 @@ header {
   gap: 10px;
 }
 
+/* From Uiverse.io by vinodjangid07 */ 
+.InputContainer {
+  width: 210px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom,rgb(227, 213, 255),rgb(255, 231, 231));
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.input {
+  width: 200px;
+  height: 40px;
+  border: none;
+  outline: none;
+  caret-color: rgb(255, 81, 0);
+  background-color: rgb(255, 255, 255);
+  border-radius: 30px;
+  padding-left: 15px;
+  letter-spacing: 0.8px;
+  color: rgb(19, 19, 19);
+  font-size: 13.4px;
+}
+
+
 /* From Uiverse.io by cssbuttons-io */ 
 .button2 {
   --color: #560bad;
@@ -217,4 +211,62 @@ header {
 .button2:active:before {
   background: #3a0ca3;
   transition: background 0s;
+}
+
+/* From Uiverse.io by TISEPSE */ 
+a {
+  position: relative;
+  display: inline-block;
+  padding: 15px 30px;
+  border: 2px solid #000000;
+  text-transform: uppercase;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+a::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% - 12px);
+  background-color: #ffffff;
+  transition: 0.3s ease-in-out;
+  transform: scaleY(1);
+}
+
+a:hover::before {
+  transform: scaleY(0);
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: -2px;
+  height: calc(100% + 4px);
+  width: calc(100% - 12px);
+  background-color: #ffffff;
+  transition: 0.3s ease-in-out;
+  transform: scaleX(1);
+  transition-delay: 0.5s;
+}
+
+a:hover::after {
+  transform: scaleX(0);
+}
+
+a span {
+  position: relative;
+  z-index: 3;
+}
+
+.button3 {
+  background-color: none;
+  text-decoration: none;
+  background-color: #ffffff;
+  border: none;
 }
