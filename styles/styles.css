@@ -122,3 +122,16 @@ header {
     margin-top: 50px;
 }
 .Hero {margin: 80px 0;}
+
+.cer-card {
+    display: block;
+    background: white;
+    width: 400px;
+}
+
+.cer-image{
+    width: 50%;
+    border-radius: 12%;
+    text-align: center;
+    margin: a auto;
+}
