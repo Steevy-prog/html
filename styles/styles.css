@@ -71,3 +71,53 @@ header {
     font-size: 20px;
     color: #333333;
 }
+
+h1 {
+    text-align: center;
+    background: rgb(236, 234, 234);
+    margin: auto;
+    padding: 1%;
+    width: fit-content;
+}
+h2 ,p {
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.explorer{
+    padding: 15px 20px;
+    background-color: rgb(247, 163, 6);
+    border-radius: 10px;
+    border: none;
+    color: white;
+}
+
+.explorer:hover {
+    background-color: rgb(255, 140, 0);
+    cursor: pointer;
+    color: black;
+}
+.view-CER {
+    position: relative;
+    overflow: hidden;
+    padding: 15px 20px;
+    background-color: rgb(251, 250, 248);
+    border-radius: 10px;
+    border: none;
+    color: black;
+    transition: background-color 0.8s, color 0.8s;
+}
+.view-CER:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+}
