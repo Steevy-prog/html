@@ -74,6 +74,11 @@
             background-color: #e6930a;
         }
 
+        .connexion a {
+            text-decoration: none;
+            color: white;
+        }
+
         /* Hero Section */
         .hero {
             text-align: center;
