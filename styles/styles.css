@@ -127,11 +127,37 @@ header {
     display: block;
     background: white;
     width: 400px;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .cer-image{
-    width: 50%;
-    border-radius: 12%;
+    width: 70%;
+    border-radius: 8%;
     text-align: center;
-    margin: a auto;
+    margin: 60px;
+    margin-bottom: auto;
+}
+
+#author {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+    margin-left: 120px;
+}
+
+.cer-info > h3 {
+    padding: 20px;
+}
+.cer-info > p {
+    padding: 0 20px 20px 20px;
+    text-align: justify;
+    color: gray;
+    font-size: 14px;
+}
+
+.consult{
+    padding: 10px 40px 10px 40px;
+    text-align: center;
+    margin: auto 20px;
 }
