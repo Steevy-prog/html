@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archiva - Gérer mes CERs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            border-bottom: 3px solid #e9e5e5;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            width: 90px;
+            height: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: #f0f0f0;
+        }
+
+        .connexion {
+            padding: 12px 24px;
+            background-color: #f7a306;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            background: #ff8c00;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-add:hover {
+            background: #e67e00;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .level {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .btn-edit {
+            background: #ff8c00;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .btn-edit:hover {
+            background: #e67e00;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .footer-section a {
+            color: #666;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #ff8c00;
+        }
+
+        .contact-info {
+            color: #666;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #ff8c00;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+
+       @media only screen and (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cer-actions {
+                flex-direction: column;
+            }
+
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Archiva Logo">
+            </div>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="CER.html">CERs</a></li>
+                <li><a href="CERfav.html" class="active">Mes CER Favoris</a></li>
+                <li><a href="Gestion.html">Gestion de CER</a></li>
+            </ul>
+            <button class="connexion">Connexion</button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">Gérer mes CERs</h1>
+            <a href="#" class="btn-add">Ajouter un CER</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Spécialité</th>
+                        <th>Niveaux</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Prosit 3.2 - Annuaire Active Directory</td>
+                        <td>Réseau et Infra; Sécurité</td>
+                        <td><span class="level">X3</span></td>
+                        <td>11/07/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prosit 1.2 - Les réseaux LAN</td>
+                        <td>Réseau et Infra; Sécurité</td>
+                        <td><span class="level">X1</span></td>
+                        <td>13/02/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prosit 4.2 - Charte d'un projet</td>
+                        <td>Gestion de projet</td>
+                        <td><span class="level">X4</span></td>
+                        <td>01/07/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prosit 4.2 - Base de données analytique</td>
+                        <td>Data</td>
+                        <td><span class="level">X3</span></td>
+                        <td>11/07/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prosit 1.2 - IHM intuitives</td>
+                        <td>Génie-logiciel</td>
+                        <td><span class="level">X1</span></td>
+                        <td>11/07/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SAM Gestion des ressources humaines</td>
+                        <td>Gestion de projet</td>
+                        <td><span class="level">X5</span></td>
+                        <td>11/09/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prosit 4.3 - Investigation numérique</td>
+                        <td>Sécurité</td>
+                        <td><span class="level">X3</span></td>
+                        <td>11/07/2024</td>
+                        <td>
+                            <button class="btn-edit">Éditer</button>
+                            <button class="btn-delete">Supprimer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="logo">Archiva</div>
+                <div class="contact-info">
+                    <p>info@archiva.com</p>
+                    <p>+237 600 000 000</p>
+                    <p>Yassa, Douala/Cameroun</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Accueil</h3>
+                <a href="#">CERs</a>
+                <a href="#">Mes CERs favoris</a>
+                <a href="#">Gestion de CER</a>
+            </div>
+            <div class="footer-section">
+                <h3>Social Profiles</h3>
+                <div class="social-links">
+                    <a href="#">f</a>
+                    <a href="#">t</a>
+                    <a href="#">in</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2024 Archiva. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
