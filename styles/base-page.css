@@ -270,3 +270,96 @@ a span {
   background-color: #ffffff;
   border: none;
 }
+
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    flex-direction: column;
+    padding: 10px;
+  }
+  nav {
+    flex-direction: column;
+    height: auto;
+    align-items: stretch;
+  }
+  .nav-left, .nav-right, .nav-center {
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .nav-center {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .nav-bar, .connexion {
+    width: 100%;
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  .menu {
+    display: none;
+  }
+  .container {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .subcontainer1, .subcontainer2 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .Buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .button2, .button3 {
+    width: 100%;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .card {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .card__img {
+    height: 150px;
+  }
+  .card__avatar {
+    width: 80px;
+    height: 80px;
+    top: calc(50% - 40px);
+  }
+  .card__title {
+    margin-top: 40px;
+    font-size: 16px;
+  }
+  .card__subtitle {
+    font-size: 13px;
+  }
+  .card__wrapper {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .InputContainer {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  .input {
+    width: 100%;
+    font-size: 15px;
+  }
+  footer .foot-up, footer .foot-down {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+  }
+ }
