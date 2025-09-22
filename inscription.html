@@ -206,11 +206,11 @@ select {
             <form>
                 <h1>Creer un compte</h1>
                 <p>Nom complet</p>
-                <input type="text" placeholder="Nom complet"/>
+                <input type="text" placeholder="Nom complet" required/>
                 <p>Email</p>
-                <input type="email" placeholder="Entrer votre email"/>
+                <input type="email" placeholder="Entrer votre email" required/>
                 <p>Niveaux</p>
-                <select>
+                <select required>
                     <option>Choisissez une option</option>
                     <option>X1</option>
                     <option>X2</option>
@@ -219,8 +219,8 @@ select {
                     <option>X5</option>
                 </select>
                 <p>Mot de passe</p>
-                <input type="password" placeholder="Entrer votre mot de passe" />
-                <button>Creer un compte</button>
+                <input type="password" placeholder="Entrer votre mot de passe" required />
+                <button><a href="index.html">Creer un compte</a></button>
                 <span>Vous avez deja un compte ? <a href="connexion.html">Connectez-vous</a></span>
             </form>
         </div>
