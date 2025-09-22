@@ -334,6 +334,9 @@
           top: 28px;
           left: 5px;
         }
+        #burger:not(:checked) ~ .side-bar {
+           display: none;
+         }
 
         /* Responsive Design */
         @media only screen and (max-width: 768px) {
@@ -513,7 +516,7 @@
                 justify-content: center;
             }
         }
-         .sidebar {
+        .side-bar {
       background: white;
       padding: 20px 30px;
       border-radius: 10px;
@@ -522,7 +525,7 @@
       transition: all 0.3s ease;
     }
 
-    .sidebar h3 {
+    .side-bar h3 {
       margin-top: 15px;
       margin-bottom: 10px;
       color: #333;
@@ -605,15 +608,17 @@
                         <option value="populaire">Plus populaire</option>
                         <option value="titre">Par titre</option>
                     </select>
-                      <button class="toggle-btn" onclick="toggleSidebar()">Toggle Sidebar</button>
-                    <button class="toggle" onclick="toggleSidebar()">
+<label class="burger">
+  <input type="checkbox" id="burger" />
+  <span></span>
+  <span></span>
+  <span></span>
+</label>
+                    <!--<button class="toggle-btn" onclick="toggleSidebar()">
                     <label class="burger" for="burger">
                       <input type="checkbox" id="burger">
-                      <span></span>
-                      <span></span>
-                      <span></span>
                     </label>
-                    </button>
+                    </button>-->
                 </div>
             </div>
 
