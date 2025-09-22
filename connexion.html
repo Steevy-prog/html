@@ -59,6 +59,64 @@
             display: block;
         }
 
+        .container_bottom{
+        text-align: right;
+        }
+
+      a:link {
+  color: orange;
+  background-color: transparent;
+
+}
+
+a:visited {
+  color: rgba(255, 166, 0, 0.623);
+  background-color: transparent;
+
+}
+
+a:hover {
+  color: rgba(255, 166, 0, 0.653);
+  background-color: transparent;
+  
+}
+
+a:active {
+  color: rgba(255, 166, 0, 0.503);
+  background-color: transparent;
+
+}
+
+.repo {
+    font-size: 95%;
+    width: 95%;
+    
+}
+
+.container_bottom {
+    font-size: 95%;
+}
+
+h1 {
+    position: relative;
+    text-align: center;
+    margin-top: -150px;
+    font-size: px;
+}
+
+@media only screen and (max-width: 768px) { 
+    /* Ajoutez ici les styles spécifiques pour la version mobile */ 
+    body { 
+        font-size: 16px; 
+    } 
+    .header { 
+        flex-direction: column; 
+        padding: 10px; 
+    } 
+    .menu { 
+        display: none; 
+    } /* Continuez à adapter les autres éléments */ }
+
     </style>
 </head>
 <body>
@@ -67,15 +125,20 @@
             <form>
                 <h1>Se connecter</h1>
                 <p>Email</p>
-                <input type="email" placeholder="Entrer votre email"/>
+                <input class ="repo" type="email" placeholder="Entrer votre email"/>
                 <p>Mot de passe</p>
-                <input type="password" placeholder="Entrer votre mot de passe" />
-                <button>Se connecter</button>
+                <input class="repo" type="password" placeholder="Entrer votre mot de passe" />
+        <div class="container_bottom" >
+        <br>
+        <a class="massa" href="#">Mot de passe oublié ?</a>
+        </div>
+
+                <button class = "repo">Se connecter</button>
                 <span>Vous n'avez pas de compte ? <a href="inscription.html">Créez un nouveau compte</a></span>
             </form>
         </div>
         <div class="image-container">
-            <svg width="692" height="657" viewBox="0 0 692 657" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg width="" height="657" viewBox="0 0 692 657" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <rect width="692" height="657" fill="url(#pattern0_77_761)"/>
             <defs>
             <pattern id="pattern0_77_761" patternContentUnits="objectBoundingBox" width="1" height="1">
