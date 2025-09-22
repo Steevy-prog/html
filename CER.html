@@ -551,31 +551,24 @@
     </header>
 
     <main>
-        <side-bar class="side-bar">
-             <h3>Niveau</h3>
-             <input type="checkbox" id="niveau1" name="niveau1">
-            <label for="niveau1">X1</label><br>
-            <input type="checkbox" id="niveau2" name="niveau2">
-            <label for="niveau2">X2</label><br>
-            <input type="checkbox" id="niveau3" name="niveau3">
-            <label for="niveau3">X3</label><br>
-            <input type="checkbox" id="niveau4" name="niveau4">
-            <label for="niveau4">X4</label><br>
-            <input type="checkbox" id="niveau5" name="niveau5"> 
-            <label for="niveau5">X5</label><br>
 
-            <h3>Domaine de spécialisation</h3>
-             <input type="checkbox" id="dom1" name="dom1">
-            <label for="dom1">Reseau & Infra</label><br>
-            <input type="checkbox" id="dom2" name="dom2">
-            <label for="dom2">Securite</label><br>
-            <input type="checkbox" id="dom3" name="dom3">
-            <label for="dom3">Genie logiciel</label><br>
-            <input type="checkbox" id="dom4" name="dom4">
-            <label for="dom4">Data</label><br>
-            <input type="checkbox" id="dom5" name="dom5">
-            <label for="dom5">Gestion de projet</label><br>
-        </side-bar>
+  <div class="sidebar-wrapper">
+    <div class="side-bar" id="sidebar">
+      <h3>Niveau</h3>
+      <input type="checkbox" id="niveau1"><label for="niveau1"> X1</label><br>
+      <input type="checkbox" id="niveau2"><label for="niveau2"> X2</label><br>
+      <input type="checkbox" id="niveau3"><label for="niveau3"> X3</label><br>
+      <input type="checkbox" id="niveau4"><label for="niveau4"> X4</label><br>
+      <input type="checkbox" id="niveau5"><label for="niveau5"> X5</label><br>
+
+      <h3>Domaine de spécialisation</h3>
+      <input type="checkbox" id="dom1"><label for="dom1"> Reseau & Infra</label><br>
+      <input type="checkbox" id="dom2"><label for="dom2"> Securite</label><br>
+      <input type="checkbox" id="dom3"><label for="dom3"> Genie logiciel</label><br>
+      <input type="checkbox" id="dom4"><label for="dom4"> Data</label><br>
+      <input type="checkbox" id="dom5"><label for="dom5"> Gestion de projet</label><br>
+    </div>
+  </div>
         <div class="main-content">
             <div class="page-header">
                 <h1>Tous les CERs</h1>
@@ -594,14 +587,15 @@
                         <option value="populaire">Plus populaire</option>
                         <option value="titre">Par titre</option>
                     </select>
-                    <div class="toggle" onclick="toggleSidebar()">
-                    <label class="burger" for="burger" onclick="toggleSidebar()">
+                      <button class="toggle-btn" onclick="toggleSidebar()">Toggle Sidebar</button>
+                    <button class="toggle" onclick="toggleSidebar()">
+                    <label class="burger" for="burger">
                       <input type="checkbox" id="burger">
                       <span></span>
                       <span></span>
                       <span></span>
                     </label>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -685,7 +679,7 @@
             container.innerHTML = allCers.map(createCERCard).join('');
         });
         function toggleSidebar() {
-          const sidebar = document.querySelector('side-bar');
+          const sidebar = document.querySelector('.side-bar');
           sidebar.classList.toggle('hidden');
         }
     </script>
