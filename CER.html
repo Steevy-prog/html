@@ -238,8 +238,8 @@
 
         .btn-favorite {
             background-color: transparent;
-            border: 2px solid #e74c3c;
-            color: #e74c3c;
+            border: 2px solid #fcaa1c;
+            color: #fcaa1c;
             padding: 10px 15px;
             border-radius: 6px;
             cursor: pointer;
@@ -248,7 +248,7 @@
 
         .btn-favorite:hover,
         .btn-favorite.active {
-            background-color: #e74c3c;
+            background-color: #fcaa1c;
             color: white;
         }
 
@@ -262,17 +262,17 @@
 
         .pagination button {
             padding: 10px 15px;
-            border: 2px solid #3498db;
+            border: 2px solid #fcaa1c;
             background-color: white;
-            color: #3498db;
-            border-radius: 6px;
+            color: #fcaa1c;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .pagination button:hover,
         .pagination button.active {
-            background-color: #3498db;
+            background-color: #fcaa1c;
             color: white;
         }
         .burger {
@@ -516,7 +516,7 @@
                 justify-content: center;
             }
         }
-        .side-bar {
+     .side-bar {
       background: white;
       padding: 20px 30px;
       border-radius: 10px;
@@ -551,7 +551,7 @@
 
     /* Hidden state */
     .hidden {
-      display: none;
+      display: none !important;
     }
     </style>
 </head>
@@ -609,7 +609,7 @@
                         <option value="titre">Par titre</option>
                     </select>
 <label class="burger">
-  <input type="checkbox" id="burger" />
+  <input type="checkbox" id="burger"/>
   <span></span>
   <span></span>
   <span></span>
