@@ -1,0 +1,192 @@
+        body {
+            background: linear-gradient(to bottom, orange, white);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .main-container{
+            background-color: white;
+            border-radius: 30px;
+            margin: 5%;
+            display: flex;
+        }
+
+        .image-container{
+            width: 692px;
+            height: 657px;
+            overflow: hidden;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .form-container{
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        form > p{
+            margin: 5% 0 0 5%;
+        }
+
+        form > input{
+            margin: 1% 0 0 5%;
+            padding: 10px;
+            background-color: rgb(238, 236, 236);
+            border: none;
+            border-radius: 10px;
+        }
+
+        form > button{
+            margin: 5% 0 0 5%;
+            padding: 10px;
+            background-color: orange;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            display: block;
+        }
+        form > span{
+            margin: 5% 0 0 5%;
+            display: block;
+        }
+
+        .container_bottom{
+        text-align: right;
+        }
+
+      a:link {
+  color: orange;
+  background-color: transparent;
+
+}
+
+a:visited {
+  color: rgba(255, 166, 0, 0.623);
+  background-color: transparent;
+
+}
+
+a:hover {
+  color: rgba(255, 166, 0, 0.653);
+  background-color: transparent;
+  
+}
+
+a:active {
+  color: rgba(255, 166, 0, 0.503);
+  background-color: transparent;
+
+}
+
+select {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding: 5px;
+    background-color: rgb(238, 236, 236);
+    width: 100%;
+    color: grey;
+    border: none;
+    border-radius: 10px;
+    }
+
+.repo {
+    font-size: 95%;
+    width: 95%;
+    
+}
+
+.container_bottom {
+    font-size: 95%;
+}
+
+h1 {
+    position: relative;
+    text-align: center;
+    margin-top: -150px;
+    
+}
+
+@media only screen and (max-width: 768px) { 
+    body { 
+        font-size: 16px; 
+        padding: 0;
+        margin: 0;
+        background: linear-gradient(to bottom, orange, white);
+        overflow: hidden;
+
+    } 
+    .main-container {
+        flex-direction: column;
+        margin: 2% 0;
+        border-radius: 0;
+        box-shadow: none;
+        width: 100%;
+        height: max-content;
+    }
+    .image-container {
+        width: 100%;
+        height: max-content;
+        border-radius: 0;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 0;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .form-container {
+        padding: 10px;
+        min-width: 0;
+        align-items: flex-start;
+        
+    }
+    form > input,
+    form > button,
+    form > span {
+        margin-left: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .container_bottom {
+        
+        text-align: left;
+        font-size: 90%;
+    }
+    h1 {
+        font-size: 1.5rem;
+        margin-top: 10px;
+    }
+    .header { 
+        flex-direction: column; 
+        padding: 10px; 
+    } 
+    .menu { 
+        display: none; 
+    }
+    .container_bottom {
+        text-align: right;
+    }
+    svg {
+    position: absolute;
+    display: flex;
+    align-items: center;
+  width: 100%;
+  height: 30%;
+}
+select {
+    font-size: 14px;
+    color: black;
+   
+    
+    margin-bottom: 10px;
+        overflow: hidden;
+    padding: 5px;
+    background-color: rgb(238, 236, 236);
+    width: 100%;
+    color: grey;
+    border: none;
+    border-radius: 10px;
+    }
+}

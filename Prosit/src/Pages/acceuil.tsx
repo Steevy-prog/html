@@ -1,6 +1,7 @@
 import Header from '../composants/header'
 import Footer from '../composants/footer'
 import searchicon from '../assets/search.png'
+import '../styles/acceuil.css'
 function Acceuil(){
     return (
         <>
