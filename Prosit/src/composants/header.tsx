@@ -17,10 +17,10 @@ export default function Header() {
 
         <nav className="hidden md:flex items-center gap-6">
           <ul className="flex items-center gap-6 text-slate-700">
-            <li><Link className="px-3 py-2 rounded-md hover:bg-slate-100 transition" to="/">Accueil</Link></li>
-            <li><Link className="px-3 py-2 rounded-md hover:bg-slate-100 transition" to="/cer">CERs</Link></li>
-            <li><Link className="px-3 py-2 rounded-md hover:bg-slate-100 transition" to="/favoris">Mes CER Favoris</Link></li>
-            <li><Link className="px-3 py-2 rounded-md hover:bg-slate-100 transition" to="/gestion">Gestion de CER</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/">Accueil</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/cer">CERs</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/favoris">Mes CER Favoris</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/gestion">Gestion de CER</Link></li>
           </ul>
         </nav>
 
@@ -62,7 +62,7 @@ export default function Header() {
           <Link
             onClick={() => setOpen(false)}
             to="/connexion"
-            className="inline-block px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-center"
+            className="inline-block px-4 py-2 bg-[#e6930a]-500 hover:bg-orange-600 hover:text-white-500 rounded-md text-center"
           >
             Connexion
           </Link>
