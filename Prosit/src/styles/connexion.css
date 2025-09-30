@@ -1,26 +1,33 @@
-      body {
+body {
             background: linear-gradient(to bottom, orange, white);
             margin: 0;
             padding: 0;
             min-height: 100vh;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
         }
         .main-container{
             background-color: white;
             border-radius: 30px;
             margin: 5%;
             display: flex;
-            align-self: center;
-           
-            
+            justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    min-height: 80vh;
+    width: 100%;
         }
 
         .image-container{
             width: 692px;
             height: 657px;
             overflow: hidden;
+            
             border-top-right-radius: 30px;
             border-bottom-right-radius: 30px;
+            display: flex; /* Add this */
+    justify-content: center; /* Add this */
+    align-items: center; /* Add this */
         }
         .form-container{
             flex: 1;
