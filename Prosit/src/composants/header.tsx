@@ -9,13 +9,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 w-full z-50 bg-white/90 backdrop-blur-sm shadow-sm h-16">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* left: logo + brand */}
+        
         <Link to="/" className="flex items-center gap-3">
           <img src={Logo} alt="Archiva logo" className="w-10 h-10 object-contain" />
           <span className="hidden sm:inline-block text-xl font-semibold text-slate-800">Archiva</span>
         </Link>
 
-        {/* desktop nav */}
         <nav className="hidden md:flex items-center gap-6">
           <ul className="flex items-center gap-6 text-slate-700">
             <li><Link className="px-3 py-2 rounded-md hover:bg-slate-100 transition" to="/">Accueil</Link></li>
@@ -25,7 +24,7 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* right: recherche + bouton connexion (desktop) */}
+        
         <div className="hidden md:flex items-center gap-4">
           <Link
             to="/connexion"
@@ -35,7 +34,7 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* mobile menu button */}
+        
         <button
           className="md:hidden p-2 rounded-md text-slate-700"
           onClick={() => setOpen(v => !v)}
@@ -48,7 +47,7 @@ export default function Header() {
         </button>
       </div>
 
-      {/* mobile panel */}
+     
       <div className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${open ? 'max-h-96' : 'max-h-0'}`}>
         <div className="px-6 pb-6 flex flex-col gap-3">
           <nav>
