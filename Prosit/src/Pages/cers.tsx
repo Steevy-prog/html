@@ -221,7 +221,9 @@ const Cers: React.FC = () => {
   // --- Render ---
   return (
     <>
-      <Header />
+<header className="relative">
+  <Header />
+</header>
       <main className="bg-gray-100 text-gray-800 min-h-[80vh]">
         <div className="max-w-6xl mx-auto px-4 py-10">
           {/* page header */}
@@ -475,7 +477,9 @@ const Cers: React.FC = () => {
           </div>
         </div>
       </main>
+      <footer>
       <Footer />
+      </footer>
     </>
   );
 };
