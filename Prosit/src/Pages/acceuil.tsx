@@ -68,12 +68,11 @@ async function displayImage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-5" id="cer-cards-container">
             {/* Card 1 */}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition">
-              {/*<img
+              <img
                 src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop"
                 alt="CER Example"
                 className="w-full h-48 object-cover"
-              />*/}
-              displayImage();
+              />
               <div className="p-5">
                 <p className="text-[#f7a306] text-sm mb-2">par Marie Dubois</p>
                 <h4 className="text-lg font-semibold text-[#2c3e50] mb-3 leading-snug">

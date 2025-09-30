@@ -59,7 +59,7 @@ const SAMPLE_CERS: CER[] = [
     domains: ["Web", "Pentest"],
     level: "X4",
     image:
-      "https://images.unsplash.com/photo-1526378723934-8f9a9d09e7d9?w=800&h=450&fit=crop",
+      "https://thecodingmachine.com/wp-content/uploads/securite-web.jpg",
     date: "01 Jul 2024",
     description:
       "Principes de sécurité Web, OWASP, protection des applications et bonnes pratiques.",

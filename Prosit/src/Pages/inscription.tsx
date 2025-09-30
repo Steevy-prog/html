@@ -1,7 +1,22 @@
-import {Link} from "react-router-dom"
-function Inscription(){
+import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+function Inscription() {
+    const [selectedValue, setSelectedValue] = useState('')
+
+    const options = [
+    { label: 'X1', value: 'X1' },
+    { label: 'X2', value: 'X2' },
+    { label: 'X3', value: 'X3' },
+    { label: 'X4', value: 'X4' },
+    { label: 'X5', value: 'X5' },
+    
+  ];
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
     return(
-        <>
+        
             <div className="main-container">
         <div className="form-container">
             <form>
@@ -11,14 +26,15 @@ function Inscription(){
                 <p>Email</p>
                 <input type="email" placeholder="Entrer votre email" required/>
                 <p>Niveaux</p>
-                <select required>
-                    <option>Choisissez une option</option>
-                    <option>X1</option>
-                    <option>X2</option>
-                    <option>X3</option>
-                    <option>X4</option>
-                    <option>X5</option>
-                </select>
+                <label htmlFor="mySelect">Select an option:</label>
+      <select id="mySelect" value={selectedValue} onChange={handleChange}>
+        <option value="">-- Choisissez une option --</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
                 <p>Mot de passe</p>
                 <input type="password" placeholder="Entrer votre mot de passe" required />
                 <button><Link to="/">Creer un compte</Link></button>
@@ -37,7 +53,7 @@ function Inscription(){
             </svg>
         </div>*/}
     </div>
-        </>
+        
     )
 }
 export default Inscription
