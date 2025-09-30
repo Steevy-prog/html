@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../composants/header";
 import Footer from "../composants/footer";
+import Card from "../composants/card";
 
 interface CER {
   id: number;
@@ -123,9 +124,9 @@ function Gestion() {
   return (
     <>
       <Header />
-      <main>
+      <main className="container mx-auto px-6 py-6">
         {/* Tabs */}
-        <div className="tabs">
+        <div className="tabs flex gap-2 mb-6">
           <button
             className={`tab-btn ${activeTab === "myCers" ? "active" : ""}`}
             onClick={() => showTab("myCers")}
@@ -150,51 +151,27 @@ function Gestion() {
         {activeTab === "myCers" && (
           <div className="tab-content">
             {userCers.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "60px 20px" }}>
-                <div style={{ fontSize: 60, marginBottom: 20 }}>📝</div>
-                <h3>Aucun CER créé</h3>
-                <p style={{ marginBottom: 30 }}>
-                  Commencez par créer votre premier CER
-                </p>
-                <button onClick={() => showTab("addCer")}>Créer un CER</button>
+              <div className="text-center py-16">
+                <div className="text-6xl mb-4">📝</div>
+                <h3 className="text-lg font-medium mb-2">Aucun CER créé</h3>
+                <p className="mb-6">Commencez par créer votre premier CER</p>
+                <button
+                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                  onClick={() => showTab("addCer")}
+                >
+                  Créer un CER
+                </button>
               </div>
             ) : (
-              <div className="cer-list">
+              <div className="cer-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {userCers.map((cer) => (
-                  <div className="cer-item" key={cer.id}>
-                    <img src={cer.image} alt={cer.title} />
-                    <div className="cer-item-info">
-                      <div className="cer-item-title">{cer.title}</div>
-                      <div className="cer-item-meta">
-                        {cer.category} • {cer.date} •{" "}
-                        <span
-                          className={`status-badge ${
-                            getStatusBadge(cer.status).class
-                          }`}
-                        >
-                          {getStatusBadge(cer.status).text}
-                        </span>
-                      </div>
-                      <div className="cer-item-stats">
-                        <span>👁 {cer.views} vues</span>
-                        <span>♥ {cer.favorites} favoris</span>
-                      </div>
-                    </div>
-                    <div className="cer-item-actions">
-                      <button
-                        className="btn-sm btn-edit"
-                        onClick={() => editCER(cer.id)}
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        className="btn-sm btn-delete"
-                        onClick={() => deleteCER(cer.id)}
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
+                  <Card
+                    key={cer.id}
+                    image={cer.image}
+                    title={cer.title}
+                    author={cer.category}
+                    description={`${cer.date} • ${getStatusBadge(cer.status).text} • ${cer.views} vues`}
+                  />
                 ))}
               </div>
             )}
@@ -203,21 +180,20 @@ function Gestion() {
 
         {activeTab === "addCer" && (
           <div className="tab-content">
-            <form id="cer-form" onSubmit={handleFormSubmit}>
-              <input type="text" name="title" placeholder="Titre du CER" />
-              <input type="text" name="category" placeholder="Catégorie" />
-              <input type="file" name="image" />
-              <input type="file" name="content" />
-              <div className="tags-input">
+            <form id="cer-form" onSubmit={handleFormSubmit} className="space-y-4">
+              <input className="w-full border rounded px-3 py-2" type="text" name="title" placeholder="Titre du CER" />
+              <input className="w-full border rounded px-3 py-2" type="text" name="category" placeholder="Catégorie" />
+              <input className="w-full" type="file" name="image" />
+              <input className="w-full" type="file" name="content" />
+              <div className="tags-input flex flex-wrap gap-2 items-center">
                 {tags.map((tag, i) => (
-                  <div className="tag" key={i}>
-                    {tag}{" "}
-                    <button type="button" onClick={() => removeTag(i)}>
-                      ×
-                    </button>
+                  <div key={i} className="tag bg-gray-100 px-2 py-1 rounded flex items-center gap-2">
+                    <span>{tag}</span>
+                    <button type="button" onClick={() => removeTag(i)} className="text-sm">×</button>
                   </div>
                 ))}
                 <input
+                  className="px-3 py-2 border rounded"
                   type="text"
                   placeholder="Ajouter un tag..."
                   onKeyDown={(e) => {
@@ -229,7 +205,7 @@ function Gestion() {
                   }}
                 />
               </div>
-              <button type="submit">Ajouter CER</button>
+              <button className="px-4 py-2 bg-green-600 text-white rounded" type="submit">Ajouter CER</button>
             </form>
           </div>
         )}

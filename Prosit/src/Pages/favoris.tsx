@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import Header from "../composants/header";
 import Footer from "../composants/footer";
+import Card from "../composants/card";
 
 interface FavoriteCER {
   id: number;
@@ -15,13 +16,13 @@ interface FavoriteCER {
   addedToFavorites: string;
 }
 
-function Favoris() {
+export default function Favoris() {
   const [favoriteCers, setFavoriteCers] = useState<FavoriteCER[]>([
     {
       id: 2,
       image:
-        "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop",
-      author: "Marie Dubois.",
+        "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=450&fit=crop",
+      author: "Marie Dubois",
       date: "12 Nov 2024",
       title: "Prosit 3.2 Base de données",
       tags: ["SQL", "MySQL", "PostgreSQL"],
@@ -34,8 +35,8 @@ function Favoris() {
     {
       id: 5,
       image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop",
-      author: "Pierre Durand.",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
+      author: "Pierre Durand",
       date: "05 Nov 2024",
       title: "Prosit 1.3 Réseaux",
       tags: ["TCP/IP", "Réseaux", "Administration"],
@@ -47,136 +48,146 @@ function Favoris() {
     },
   ]);
 
-  // --- Functions ---
-
   const removeFavorite = (id: number) => {
-    setFavoriteCers(favoriteCers.filter((cer) => cer.id !== id));
+    setFavoriteCers((prev) => prev.filter((cer) => cer.id !== id));
   };
 
-  const updateStatistics = () => {
-    return {
-      totalFavorites: favoriteCers.length,
-      totalCategories: [...new Set(favoriteCers.map((cer) => cer.category))]
-        .length,
-      lastAdded:
-        favoriteCers.length > 0
-          ? new Date(
-              Math.max(
-                ...favoriteCers.map(
-                  (cer) => new Date(cer.addedToFavorites).getTime()
-                )
-              )
-            ).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
-          : "-",
-      totalViews: favoriteCers.reduce((sum, cer) => sum + cer.views, 0),
-    };
-  };
-
-  const stats = updateStatistics();
-
-  // --- JSX Render ---
+  const stats = useMemo(() => {
+    const totalFavorites = favoriteCers.length;
+    const totalCategories = new Set(favoriteCers.map((c) => c.category)).size;
+    const totalViews = favoriteCers.reduce((s, c) => s + c.views, 0);
+    const lastAdded =
+      favoriteCers.length > 0
+        ? new Date(
+            Math.max(
+              ...favoriteCers.map((c) => new Date(c.addedToFavorites).getTime())
+            )
+          ).toLocaleDateString("fr-FR", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })
+        : "-";
+    return { totalFavorites, totalCategories, totalViews, lastAdded };
+  }, [favoriteCers]);
 
   return (
     <>
       <Header />
-      <main>
-        <div className="main-content">
-          <div className="page-header">
-            <h1>Mes CER Favoris</h1>
-            <p>
-              Retrouvez ici tous les CERs que vous avez ajoutés à vos favoris
-              pour un accès rapide et facile.
+      <main className="pt-20 container mx-auto px-6 pb-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Page header */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold text-slate-800">
+              Mes CER Favoris
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Retrouvez ici tous les CERs que vous avez ajoutés à vos favoris.
             </p>
           </div>
 
           {/* Stats */}
-          <div className="stats-section">
-            <div className="stat-card">
-              <div className="stat-number">{stats.totalFavorites}</div>
-              <div className="stat-label">CERs Favoris</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-md shadow-sm p-4 text-center">
+              <div className="text-lg font-semibold text-slate-800">
+                {stats.totalFavorites}
+              </div>
+              <div className="text-xs text-slate-500">CERs Favoris</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-number">{stats.totalCategories}</div>
-              <div className="stat-label">Catégories</div>
+            <div className="bg-white rounded-md shadow-sm p-4 text-center">
+              <div className="text-lg font-semibold text-slate-800">
+                {stats.totalCategories}
+              </div>
+              <div className="text-xs text-slate-500">Catégories</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-number">{stats.lastAdded}</div>
-              <div className="stat-label">Dernier ajout</div>
+            <div className="bg-white rounded-md shadow-sm p-4 text-center">
+              <div className="text-lg font-semibold text-slate-800">
+                {stats.lastAdded}
+              </div>
+              <div className="text-xs text-slate-500">Dernier ajout</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-number">{stats.totalViews}</div>
-              <div className="stat-label">Vues totales</div>
+            <div className="bg-white rounded-md shadow-sm p-4 text-center">
+              <div className="text-lg font-semibold text-slate-800">
+                {stats.totalViews}
+              </div>
+              <div className="text-xs text-slate-500">Vues totales</div>
             </div>
           </div>
 
-          {/* Favorite CERs */}
+          {/* Favorites list */}
           {favoriteCers.length === 0 ? (
-            <div className="empty-state">
-              <div style={{ fontSize: 80, marginBottom: 20 }}>📚</div>
-              <h3>Aucun CER favori pour le moment</h3>
-              <p>
-                Vous n'avez pas encore ajouté de CER à vos favoris. Explorez
-                notre collection et ajoutez vos CERs préférés pour un accès
-                rapide.
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">📚</div>
+              <h3 className="text-lg font-medium mb-2">
+                Aucun CER favori pour le moment
+              </h3>
+              <p className="text-sm text-slate-500 mb-6">
+                Explorez notre collection et ajoutez vos CERs préférés pour un
+                accès rapide.
               </p>
-              <a href="/cers" className="btn-primary">
+              <a
+                href="/cers"
+                className="inline-block px-4 py-2 bg-orange-500 text-white rounded-md shadow-sm"
+              >
                 Explorer les CERs
               </a>
             </div>
           ) : (
-            <div className="favorites-grid">
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {favoriteCers.map((cer) => (
-                <div className="cer-card" key={cer.id}>
-                  <div className="favorite-badge">♥ Favori</div>
-                  <img src={cer.image} alt={cer.title} />
-                  <div className="cer-info">
-                    <div className="cer-meta">
-                      <span className="author">par {cer.author}</span>
-                      <span className="cer-date">{cer.date}</span>
-                    </div>
-                    <h3>{cer.title}</h3>
-                    <div className="cer-tags">
-                      {cer.tags.map((tag, idx) => (
-                        <span className="tag" key={idx}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="description">{cer.description}</p>
-                    <div className="cer-actions">
-                      <button className="btn-primary">Consulter le CER</button>
-                      <button
-                        className="btn-remove"
-                        onClick={() => removeFavorite(cer.id)}
-                      >
-                        Retirer des favoris
-                      </button>
-                    </div>
+                <div key={cer.id} className="relative">
+                  {/* favourite badge */}
+                  <div className="absolute top-3 left-3 bg-orange-50 text-orange-600 text-xs font-medium px-2 py-1 rounded-md shadow-sm z-10">
+                    ♥ Favori
+                  </div>
+
+                  {/* Card */}
+                  <Card
+                    image={cer.image}
+                    title={cer.title}
+                    author={cer.author}
+                    description={`${cer.date} • ${cer.tags.join(", ")} • ${cer.views} vues`}
+                  />
+
+                  {/* Actions under card */}
+                  <div className="mt-3 flex gap-3 justify-between">
+                    <a
+                      href={`/cer/${cer.id}`}
+                      className="flex-1 inline-flex items-center justify-center px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm"
+                    >
+                      Consulter le CER
+                    </a>
+                    <button
+                      onClick={() => removeFavorite(cer.id)}
+                      className="px-3 py-2 bg-white border border-slate-200 text-slate-700 rounded-md hover:bg-slate-50 text-sm"
+                    >
+                      Retirer
+                    </button>
                   </div>
                 </div>
               ))}
-            </div>
+            </section>
           )}
 
           {/* Suggested Collections */}
-          <div className="collections-section">
-            <h2 className="section-title">Collections Suggérées</h2>
-            <div className="collections-grid">
-              <div className="collection-card">
-                <h4>Développement Web</h4>
-                <p className="collection-count">12 CERs</p>
+          <div className="mt-10">
+            <h2 className="text-lg font-semibold mb-4">Collections Suggérées</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded-md p-4 shadow-sm">
+                <h4 className="font-medium">Développement Web</h4>
+                <p className="text-sm text-slate-500">12 CERs</p>
               </div>
-              <div className="collection-card">
-                <h4>Base de Données</h4>
-                <p className="collection-count">8 CERs</p>
+              <div className="bg-white rounded-md p-4 shadow-sm">
+                <h4 className="font-medium">Base de Données</h4>
+                <p className="text-sm text-slate-500">8 CERs</p>
               </div>
-              <div className="collection-card">
-                <h4>Sécurité Informatique</h4>
-                <p className="collection-count">6 CERs</p>
+              <div className="bg-white rounded-md p-4 shadow-sm">
+                <h4 className="font-medium">Sécurité Informatique</h4>
+                <p className="text-sm text-slate-500">6 CERs</p>
               </div>
-              <div className="collection-card">
-                <h4>Intelligence Artificielle</h4>
-                <p className="collection-count">15 CERs</p>
+              <div className="bg-white rounded-md p-4 shadow-sm">
+                <h4 className="font-medium">Intelligence Artificielle</h4>
+                <p className="text-sm text-slate-500">15 CERs</p>
               </div>
             </div>
           </div>
@@ -186,5 +197,3 @@ function Favoris() {
     </>
   );
 }
-
-export default Favoris;
