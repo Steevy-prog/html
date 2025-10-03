@@ -7,10 +7,10 @@ const CookieExample: React.FC = () => {
 
   const handleSetCookie = () => {
     setCookie("username", "Steevy", {
-      path: "/",          // cookie valid for entire site
-      maxAge: 3600,       // expires in 1 hour
-      secure: true,       // sent only over HTTPS
-      sameSite: "Strict", // CSRF protection
+  path: "/",
+  maxAge: 3600,
+  secure: process.env.NODE_ENV === "production", // works on localhost
+  sameSite: "strict",
     });
   };
 

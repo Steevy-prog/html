@@ -14,11 +14,13 @@ import Inscription from './Pages/InscriptionNew';
 import CreateCer from './Pages/CreateCer';
 import CersList from './Pages/CersList';
 import Dashboard from './Pages/Dashboard';
+import { CookiesProvider } from 'react-cookie';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <AuthProvider>
+        <CookiesProvider>
         <Routes>
           <Route path="/" element={<AppPage />} />
           <Route path="/acceuil" element={<AppPage />} />
@@ -32,6 +34,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
         </Routes>
+        </CookiesProvider>
       </AuthProvider>
     </Router>
   </StrictMode>

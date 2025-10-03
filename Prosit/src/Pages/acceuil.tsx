@@ -5,6 +5,7 @@ import Footer from '../composants/footer';
 import searchicon from '../assets/search.png';
 import apiService from '../services/apiService';
 import type { Cer } from '../types';
+import CookieExample from "../cookie";
 
 function Acceuil() {
   const [cers, setCers] = useState<Cer[]>([]);
@@ -76,7 +77,7 @@ function Acceuil() {
             </button>
           </div>
         </section>
-
+       <CookieExample />
         {/* Best CERs Section */}
         <section className="max-w-6xl mx-auto px-5">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
