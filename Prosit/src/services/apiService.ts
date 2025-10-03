@@ -120,6 +120,7 @@ class ApiService {
     file_path?: string;
     file_type?: string;
     file_size?: number;
+    status?: string;
   }) {
     return this.request('/cers', {
       method: 'POST',

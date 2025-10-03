@@ -79,19 +79,8 @@ ALTER TABLE cers DROP INDEX IF EXISTS idx_fulltext_search;
 ALTER TABLE cers ADD FULLTEXT INDEX idx_fulltext_search (title, description, keywords);
 
 -- 4. AJOUTER LA COLONNE comment_count SI NÉCESSAIRE
-SET @col_exists = 0;
-SELECT COUNT(*) INTO @col_exists 
-FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE TABLE_SCHEMA = 'Archiva' 
-  AND TABLE_NAME = 'cers' 
-  AND COLUMN_NAME = 'comment_count';
-
-SET @sql = IF(@col_exists = 0, 
-    'ALTER TABLE cers ADD COLUMN comment_count INT DEFAULT 0 AFTER rating_count',
-    'SELECT "Column comment_count already exists"');
-PREPARE stmt FROM @sql;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
+-- On utilise une approche simple : si la colonne existe déjà, l'erreur sera ignorée
+ALTER TABLE cers ADD COLUMN comment_count INT DEFAULT 0 AFTER rating_count;
 
 -- 5. CRÉER DES TRIGGERS pour maintenir les compteurs
 DROP TRIGGER IF EXISTS after_comment_insert;

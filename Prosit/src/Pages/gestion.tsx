@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../composants/header";
 import Footer from "../composants/footer";
 import Card from "../composants/card";
@@ -15,6 +16,13 @@ interface CER {
 }
 
 function Gestion() {
+  const navigate = useNavigate();
+
+  // Redirection automatique vers le dashboard
+  useEffect(() => {
+    navigate('/dashboard', { replace: true });
+  }, [navigate]);
+
   const [userCers, setUserCers] = useState<CER[]>([
     {
       id: 1,
