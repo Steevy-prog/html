@@ -1,19 +1,48 @@
-import Header from '../composants/header'
-import Footer from '../composants/footer'
-import searchicon from '../assets/search.png'
-import '../API/imageapi.ts'
-import getImage from '../API/imageapi.ts';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../composants/header';
+import Footer from '../composants/footer';
+import searchicon from '../assets/search.png';
+import apiService from '../services/apiService';
+import type { Cer } from '../types';
 
 function Acceuil() {
-async function displayImage() {
-    const blob = await getImage();
-    if (blob) {
-        const url = URL.createObjectURL(blob);
-        const img = document.createElement("img");
-        img.src = url;
-        document.body.appendChild(img);
+  const [cers, setCers] = useState<Cer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadCers();
+  }, []);
+
+  const loadCers = async () => {
+    try {
+      setLoading(true);
+      const response = await apiService.getCers({ 
+        limit: 6, 
+        status: 'published' 
+      });
+      
+      if (response.success && response.data) {
+        setCers(response.data as Cer[]);
+      }
+    } catch (err: any) {
+      setError('Erreur lors du chargement des CERs');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-}
+  };
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/cers?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -21,14 +50,16 @@ async function displayImage() {
         {/* Hero Section */}
         <section className="text-center py-16 px-5 max-w-6xl mx-auto">
           {/* Search box */}
-          <div className="mt-10 flex items-center justify-center bg-white px-5 py-3 rounded-lg shadow-md max-w-lg mx-auto mb-10">
+          <form onSubmit={handleSearch} className="mt-10 flex items-center justify-center bg-white px-5 py-3 rounded-lg shadow-md max-w-lg mx-auto mb-10">
             <img className="w-5 h-5 mr-3" src={searchicon} alt="Search Icon" />
             <input
               type="search"
               placeholder="Rechercher un CER"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="invalid:border-pink-500 bg-white focus:border-4 focus:border-sky flex-1 border-none outline-none text-base text-gray-700"
             />
-          </div>
+          </form>
 
           {/* Titles */}
           <h1 className="text-4xl mb-4 text-[#2c3e50]">Bienvenue sur Archiva, votre espace</h1>
@@ -65,73 +96,52 @@ async function displayImage() {
           </div>
 
           {/* CER Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-5" id="cer-cards-container">
-            {/* Card 1 */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition">
-              <img
-                src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop"
-                alt="CER Example"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                <p className="text-[#f7a306] text-sm mb-2">par Marie Dubois</p>
-                <h4 className="text-lg font-semibold text-[#2c3e50] mb-3 leading-snug">
-                  Prosit 3.2 Base de données
-                </h4>
-                <p className="text-gray-600 leading-relaxed line-clamp-3 mb-4">
-                  Introduction aux systèmes de gestion de base de données relationnelles, conception de
-                  schémas, requêtes SQL avancées, optimisation des performances et sécurité des données.
-                </p>
-                <button className="w-full bg-gray-200 text-black py-2 rounded-md font-semibold hover:bg-blue-600 hover:text-white transition">
-                  Consulter le CER
-                </button>
-              </div>
+          {error && (
+            <div className="text-center text-red-600 mb-4 p-4 bg-red-50 rounded-lg">
+              {error}
             </div>
-
-            {/* Card 2 */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition">
-              <img
-                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop"
-                alt="CER Example"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                <p className="text-[#f7a306] text-sm mb-2">par Jean Martin</p>
-                <h4 className="text-lg font-semibold text-[#2c3e50] mb-3 leading-snug">
-                  Prosit 4.1 Programmation avancée
-                </h4>
-                <p className="text-gray-600 leading-relaxed line-clamp-3 mb-4">
-                  Concepts avancés de programmation orientée objet, design patterns, gestion de mémoire et
-                  bonnes pratiques de développement logiciel.
-                </p>
-                <button className="w-full bg-gray-200 text-black py-2 rounded-md font-semibold hover:bg-blue-600 hover:text-white transition">
-                  Consulter le CER
-                </button>
-              </div>
+          )}
+          
+          {loading ? (
+            <div className="text-center py-10">
+              <p className="text-gray-600">Chargement des CERs...</p>
             </div>
-
-            {/* Card 3 */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition">
-              <img
-                src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=400&h=200&fit=crop"
-                alt="CER Example"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                <p className="text-[#f7a306] text-sm mb-2">par Sophie Leroy</p>
-                <h4 className="text-lg font-semibold text-[#2c3e50] mb-3 leading-snug">
-                  Prosit 5.3 Analyse de données
-                </h4>
-                <p className="text-gray-600 leading-relaxed line-clamp-3 mb-4">
-                  Techniques modernes d&apos;analyse de données, visualisation avec des outils interactifs et
-                  applications dans le domaine du big data et de l&apos;intelligence artificielle.
-                </p>
-                <button className="w-full bg-gray-200 text-black py-2 rounded-md font-semibold hover:bg-blue-600 hover:text-white transition">
-                  Consulter le CER
-                </button>
-              </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-5" id="cer-cards-container">
+              {cers.length > 0 ? (
+                cers.map((cer) => (
+                  <div key={cer.cer_id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition">
+                    <img
+                      src={cer.thumbnail || "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop"}
+                      alt={cer.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-5">
+                      <p className="text-[#f7a306] text-sm mb-2">
+                        par {cer.author_first_name} {cer.author_last_name}
+                      </p>
+                      <h4 className="text-lg font-semibold text-[#2c3e50] mb-3 leading-snug">
+                        {cer.title}
+                      </h4>
+                      <p className="text-gray-600 leading-relaxed line-clamp-3 mb-4">
+                        {cer.description}
+                      </p>
+                      <button 
+                        onClick={() => navigate(`/cers/${cer.cer_id}`)}
+                        className="w-full bg-gray-200 text-black py-2 rounded-md font-semibold hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Consulter le CER
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-10">
+                  <p className="text-gray-600">Aucun CER disponible pour le moment.</p>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </section>
       </main>
       <Footer />
