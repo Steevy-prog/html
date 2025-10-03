@@ -94,12 +94,19 @@ function CreateCer() {
         ...formData,
         category_id: formData.category_id ? parseInt(formData.category_id) : undefined,
         university_id: formData.university_id ? parseInt(formData.university_id) : undefined,
+        status: 'published', // Publier le CER immédiatement
       };
 
       const response = await apiService.createCer(dataToSend);
 
       if (response.success) {
-        navigate('/acceuil');
+        // Rediriger vers le CER créé
+        const cerId = (response.data as any)?.cer_id;
+        if (cerId) {
+          navigate(`/cers/${cerId}`);
+        } else {
+          navigate('/cers');
+        }
       } else {
         throw new Error(response.message || 'Erreur lors de la création du CER');
       }

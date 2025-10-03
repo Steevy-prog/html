@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
 import AppPage from './Pages/acceuil';
-import Cer from './Pages/cers';
 import CerDetail from './Pages/CerDetail';
 import Fav from './Pages/favoris';
 import Gestion from './Pages/gestion';
@@ -26,7 +25,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/cers" element={<CersList />} />
           <Route path="/cers/:id" element={<CerDetail />} />
           <Route path="/cers/create" element={<CreateCer />} />
-          <Route path="/cer" element={<Cer />} />
           <Route path="/favoris" element={<Fav />} />
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/connexion" element={<Connexion />} />

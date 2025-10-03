@@ -68,10 +68,16 @@ function Acceuil() {
 
           {/* Buttons */}
           <div className="flex gap-5 justify-center mb-16 flex-wrap">
-            <button className="bg-[#e6930a] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#d98307] transition">
+            <button 
+              onClick={() => navigate('/cers')}
+              className="bg-[#e6930a] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#d98307] transition"
+            >
               Explorer
             </button>
-            <button className="bg-transparent text-black px-8 py-3 border-2 border-gray-200 rounded-lg font-semibold hover:bg-[#e6930a] hover:text-white transition">
+            <button 
+              onClick={() => navigate('/cers')}
+              className="bg-transparent text-black px-8 py-3 border-2 border-gray-200 rounded-lg font-semibold hover:bg-[#e6930a] hover:text-white transition"
+            >
               Tous les CERs
             </button>
           </div>
@@ -90,7 +96,10 @@ function Acceuil() {
               </p>
             </div>
             {/* Button */}
-            <button className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-[#e6930a] hover:text-black transition">
+            <button 
+              onClick={() => navigate('/cers')}
+              className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-[#e6930a] hover:text-black transition"
+            >
               Voir tout
             </button>
           </div>

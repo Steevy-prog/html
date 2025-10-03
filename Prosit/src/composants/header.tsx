@@ -18,9 +18,9 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6">
           <ul className="flex items-center gap-6 text-slate-700">
             <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/">Accueil</Link></li>
-            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/cer">CERs</Link></li>
-            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/favoris">Mes CER Favoris</Link></li>
-            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/gestion">Gestion de CER</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/cers">Explorer les CERs</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/favoris">Mes Favoris</Link></li>
+            <li><Link className="px-3 py-2 text-gray-500 rounded-md hover:bg-slate-100 hover:text-gray-800 transition" to="/dashboard">Mon Dashboard</Link></li>
           </ul>
         </nav>
 
@@ -53,9 +53,9 @@ export default function Header() {
           <nav>
             <ul className="flex flex-col gap-2">
               <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/">Accueil</Link></li>
-              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/cer">CERs</Link></li>
-              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/favoris">Mes CER Favoris</Link></li>
-              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/gestion">Gestion de CER</Link></li>
+              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/cers">Explorer les CERs</Link></li>
+              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/favoris">Mes Favoris</Link></li>
+              <li><Link onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md hover:bg-slate-100" to="/dashboard">Mon Dashboard</Link></li>
             </ul>
           </nav>
 
