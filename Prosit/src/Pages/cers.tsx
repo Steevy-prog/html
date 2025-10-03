@@ -1,8 +1,10 @@
 // src/Pages/Cers.tsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../composants/header";
 import Footer from "../composants/footer";
+import apiService from "../services/apiService";
+import type { Cer } from "../types";
 
 /** Type */
 interface CER {
@@ -19,56 +21,6 @@ interface CER {
   status: "published" | "draft" | "pending";
 }
 
-/** Sample data (extend as needed) */
-const SAMPLE_CERS: CER[] = [
-  {
-    id: 1,
-    title: "Prosit 3.2 Base de données",
-    author: "Marie Dubois",
-    category: "Base de données",
-    domains: ["SQL", "PostgreSQL"],
-    level: "X3",
-    image:
-      "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=450&fit=crop",
-    date: "12 Nov 2024",
-    description:
-      "Introduction aux systèmes de gestion de base de données relationnelles et requêtes SQL avancées.",
-    views: 189,
-    status: "published",
-  },
-  {
-    id: 2,
-    title: "Prosit 1.3 Réseaux",
-    author: "Pierre Durand",
-    category: "Réseaux",
-    domains: ["TCP/IP", "Administration"],
-    level: "X1",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
-    date: "05 Nov 2024",
-    description:
-      "Notions de base sur les architectures réseau et la configuration des LANs.",
-    views: 134,
-    status: "published",
-  },
-  {
-    id: 3,
-    title: "Prosit 4.2 Sécurité Web",
-    author: "Alice Martin",
-    category: "Sécurité",
-    domains: ["Web", "Pentest"],
-    level: "X4",
-    image:
-      "https://thecodingmachine.com/wp-content/uploads/securite-web.jpg",
-    date: "01 Jul 2024",
-    description:
-      "Principes de sécurité Web, OWASP, protection des applications et bonnes pratiques.",
-    views: 245,
-    status: "published",
-  },
-  // add more sample items as needed...
-];
-
 const LEVELS = ["X1", "X2", "X3", "X4", "X5"];
 const DOMAINS = [
   "Réseau & Infra",
@@ -82,7 +34,8 @@ const PAGE_SIZE = 6;
 
 const Cers: React.FC = () => {
   const navigate = useNavigate();
-  const [cerList, setCerList] = useState<CER[]>(SAMPLE_CERS);
+  const [cerList, setCerList] = useState<CER[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<
     "recent" | "ancien" | "populaire" | "titre"
@@ -92,6 +45,42 @@ const Cers: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [favorites, setFavorites] = useState<Record<number, boolean>>({});
   const [page, setPage] = useState(1);
+
+  // Charger les CERs depuis l'API
+  useEffect(() => {
+    loadCers();
+  }, []);
+
+  const loadCers = async () => {
+    try {
+      setLoading(true);
+      const response = await apiService.getCers({ limit: 100, status: 'published' });
+      if (response.success && response.data) {
+        const apiCers = response.data as Cer[];
+        // Convertir les CERs de l'API au format local
+        const converted: CER[] = apiCers.map((cer) => ({
+          id: cer.cer_id,
+          title: cer.title,
+          author: `${cer.author_first_name} ${cer.author_last_name}`,
+          category: cer.category_name || 'Sans catégorie',
+          domains: cer.keywords ? cer.keywords.split(',').map(k => k.trim()) : [],
+          level: 'X3', // Vous pouvez ajouter ce champ dans votre base de données
+          image: cer.thumbnail || 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=450&fit=crop',
+          date: new Date(cer.created_at).toLocaleDateString('fr-FR'),
+          description: cer.description,
+          views: cer.views_count || 0,
+          status: cer.status as 'published' | 'draft' | 'pending'
+        }));
+        setCerList(converted);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des CERs:', error);
+      // Garder les données de test en cas d'erreur
+      setCerList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // --- Functions (kept / adapted) ---
 
@@ -123,12 +112,8 @@ const Cers: React.FC = () => {
   }
 
   function handleConsult(id: number) {
-    // If you have route /cer/:id, navigate to it. Otherwise replace with your logic.
-    try {
-      navigate(`/cer/${id}`);
-    } catch {
-      alert(`Consulter CER ${id}`);
-    }
+    // Navigate to CER detail page
+    navigate(`/cers/${id}`);
   }
 
   function editCER(id: number) {
@@ -138,25 +123,6 @@ const Cers: React.FC = () => {
   function deleteCER(id: number) {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce CER ?")) return;
     setCerList((prev) => prev.filter((c) => c.id !== id));
-  }
-
-  function getStatusBadge(status: CER["status"]) {
-    const map: Record<
-      CER["status"],
-      { className: string; text: string }
-    > = {
-      published: { className: "bg-green-100 text-green-800", text: "Publié" },
-      draft: { className: "bg-gray-100 text-gray-800", text: "Brouillon" },
-      pending: { className: "bg-yellow-100 text-yellow-800", text: "En attente" },
-    };
-    const s = map[status] || map.draft;
-    return (
-      <span
-        className={`inline-block px-2 py-1 text-xs font-semibold rounded ${s.className}`}
-      >
-        {s.text}
-      </span>
-    );
   }
 
   // --- Filtering & Sorting (original logic preserved) ---
@@ -221,9 +187,9 @@ const Cers: React.FC = () => {
   // --- Render ---
   return (
     <>
-<header className="relative">
-  <Header />
-</header>
+      <header className="relative">
+        <Header />
+      </header>
       <main className="bg-gray-100 text-gray-800 min-h-[80vh]">
         <div className="max-w-6xl mx-auto px-4 py-10">
           {/* page header */}
@@ -287,81 +253,88 @@ const Cers: React.FC = () => {
               </div>
 
               {/* cer grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="cer-grid">
-                {current.map((cer) => (
-                  <article
-                    key={cer.id}
-                    className="cer-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition"
-                  >
-                    <img
-                      src={cer.image}
-                      alt={cer.title}
-                      className="w-full h-44 object-cover"
-                    />
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-yellow-500 font-semibold">{cer.author}</p>
-                        <span className="text-xs text-gray-500">{cer.date}</span>
+              {loading ? (
+                <div className="col-span-full text-center py-12">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+                  <p className="mt-4 text-gray-600">Chargement des CERs...</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="cer-grid">
+                  {current.map((cer) => (
+                    <article
+                      key={cer.id}
+                      className="cer-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition"
+                    >
+                      <img
+                        src={cer.image}
+                        alt={cer.title}
+                        className="w-full h-44 object-cover"
+                      />
+                      <div className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs text-yellow-500 font-semibold">{cer.author}</p>
+                          <span className="text-xs text-gray-500">{cer.date}</span>
+                        </div>
+
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{cer.title}</h3>
+
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-3" style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
+                          {cer.description}
+                        </p>
+
+                        <div className="flex gap-2 mb-3">
+                          {cer.domains.map((d, i) => (
+                            <span key={i} className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
+                              {d}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleConsult(cer.id)}
+                            className="flex-1 consult-btn bg-yellow-400 hover:bg-yellow-500 text-black py-2 rounded-md font-semibold"
+                          >
+                            Consulter
+                          </button>
+
+                          <button
+                            onClick={() => handleFavorite(cer.id)}
+                            className={`px-3 py-2 rounded-md border font-medium ${
+                              favorites[cer.id]
+                                ? "bg-yellow-400 text-white border-yellow-400"
+                                : "border-yellow-400 text-yellow-500"
+                            }`}
+                            aria-pressed={!!favorites[cer.id]}
+                          >
+                            {favorites[cer.id] ? "♥" : "♡"}
+                          </button>
+
+                          <button
+                            onClick={() => editCER(cer.id)}
+                            className="px-3 py-2 rounded-md border text-sm"
+                          >
+                            Éditer
+                          </button>
+
+                          <button
+                            onClick={() => deleteCER(cer.id)}
+                            className="px-3 py-2 rounded-md border text-sm text-red-600"
+                          >
+                            Suppr.
+                          </button>
+                        </div>
                       </div>
+                    </article>
+                  ))}
 
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">{cer.title}</h3>
-
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-3" style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
-                        {cer.description}
-                      </p>
-
-                      <div className="flex gap-2 mb-3">
-                        {cer.domains.map((d, i) => (
-                          <span key={i} className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
-                            {d}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleConsult(cer.id)}
-                          className="flex-1 consult-btn bg-yellow-400 hover:bg-yellow-500 text-black py-2 rounded-md font-semibold"
-                        >
-                          Consulter
-                        </button>
-
-                        <button
-                          onClick={() => handleFavorite(cer.id)}
-                          className={`px-3 py-2 rounded-md border font-medium ${
-                            favorites[cer.id]
-                              ? "bg-yellow-400 text-white border-yellow-400"
-                              : "border-yellow-400 text-yellow-500"
-                          }`}
-                          aria-pressed={!!favorites[cer.id]}
-                        >
-                          {favorites[cer.id] ? "♥" : "♡"}
-                        </button>
-
-                        <button
-                          onClick={() => editCER(cer.id)}
-                          className="px-3 py-2 rounded-md border text-sm"
-                        >
-                          Éditer
-                        </button>
-
-                        <button
-                          onClick={() => deleteCER(cer.id)}
-                          className="px-3 py-2 rounded-md border text-sm text-red-600"
-                        >
-                          Suppr.
-                        </button>
-                      </div>
+                  {current.length === 0 && (
+                    <div className="col-span-full text-center py-12 text-gray-600">
+                      Aucun résultat — essaie d'ajuster tes filtres.
                     </div>
-                  </article>
-                ))}
-
-                {current.length === 0 && (
-                  <div className="col-span-full text-center py-12 text-gray-600">
-                    Aucun résultat — essaie d'ajuster tes filtres.
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
 
               {/* pagination */}
               <div className="flex justify-center gap-3 mt-8">
