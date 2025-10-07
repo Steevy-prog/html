@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState } from 'react';
+
+import apiService from "../services/apiService";
 function Inscription() {
     const [selectedValue, setSelectedValue] = useState('')
 
@@ -15,6 +17,39 @@ function Inscription() {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Les mots de passe ne correspondent pas');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Le mot de passe doit contenir au moins 6 caractères');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { confirmPassword, ...dataToSend } = formData;
+      const response = await apiService.register(dataToSend);
+      
+      if (response.success) {
+        alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        navigate('/connexion');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'inscription');
+    } finally {
+      setLoading(false);
+    }
+  };
+
     return(
         
             <div className="main-container">
@@ -26,7 +61,7 @@ function Inscription() {
                 <p>Email</p>
                 <input type="email" placeholder="Entrer votre email" required/>
                 <p>Niveaux</p>
-                <label htmlFor="mySelect">Select an option:</label>
+                <label htmlFor="mySelect">Choisissez une option:</label>
       <select id="mySelect" value={selectedValue} onChange={handleChange}>
         <option value="">-- Choisissez une option --</option>
         {options.map((option) => (

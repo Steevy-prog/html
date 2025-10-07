@@ -1,0 +1,40 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# PHPUnit and Test Reports
+/coverage-report/
+/test-results/
+/.phpunit.cache/
+coverage.xml
+phpunit.xml.bak
+
+# SonarQube
+.sonar/
+.scannerwork/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+/dist/
+/build/

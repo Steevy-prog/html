@@ -9,6 +9,7 @@
             border-radius: 30px;
             margin: 5%;
             display: flex;
+           
         }
 
         .image-container{
@@ -88,7 +89,7 @@ select {
     padding: 5px;
     background-color: rgb(238, 236, 236);
     width: 100%;
-    color: grey;
+    color: black;
     border: none;
     border-radius: 10px;
     }
@@ -107,7 +108,13 @@ h1 {
     position: relative;
     text-align: center;
     margin-top: -150px;
+    color: black;
+
     
+}
+
+p {
+    color: black;
 }
 
 @media only screen and (max-width: 768px) { 
@@ -157,6 +164,7 @@ h1 {
     h1 {
         font-size: 1.5rem;
         margin-top: 10px;
+        color:black;
     }
     .header { 
         flex-direction: column; 
@@ -177,16 +185,14 @@ h1 {
 }
 select {
     font-size: 14px;
-    color: black;
-   
-    
+   align-items: center;
     margin-bottom: 10px;
-        overflow: hidden;
+    overflow: hidden;
     padding: 5px;
-    background-color: rgb(238, 236, 236);
     width: 100%;
     color: grey;
     border: none;
     border-radius: 10px;
+    border-color: antiquewhite;
     }
 }

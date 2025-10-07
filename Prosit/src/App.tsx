@@ -1,35 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Prosit/src/App.tsx
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import apiService from './services/apiService';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Importez vos pages
+import Acceuil from './Pages/acceuil';
+import Connexion from './Pages/connexion';
+import Inscription from './Pages/inscription';
+import Cers from './Pages/cers';
+import Favoris from './Pages/favoris';
+import Gestion from './Pages/gestion';
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+// Composant pour protéger les routes
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const response = await apiService.getCurrentUser();
+      setIsAuthenticated(response.success);
+    } catch {
+      setIsAuthenticated(false);
+    }
+  };
+
+  if (isAuthenticated === null) {
+    return <div className="flex justify-center items-center min-h-screen">Chargement...</div>;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/connexion" />;
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Routes publiques */}
+        <Route path="/" element={<Navigate to="/acceuil" />} />
+        <Route path="/acceuil" element={<Acceuil />} />
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/inscription" element={<Inscription />} />
+        <Route path="/cers" element={<Cers />} />
+        
+        {/* Routes protégées */}
+        <Route
+          path="/favoris"
+          element={
+            <ProtectedRoute>
+              <Favoris />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestion"
+          element={
+            <ProtectedRoute>
+              <Gestion />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Route 404 */}
+        <Route path="*" element={<div className="text-center p-8">Page non trouvée</div>} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
