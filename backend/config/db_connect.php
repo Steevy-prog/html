@@ -7,7 +7,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'rchiva');
 define('DB_USER', 'root'); // Par défaut sur XAMPP
-define('DB_PASS', 'YuxjM(-bL[R!25nd'); // Mot de passe personnalisé
+define('DB_PASS', ''); // Mot de passe personnalisé
 define('DB_CHARSET', 'utf8mb4');
 
 // Only send headers if not in CLI mode and headers not already sent
