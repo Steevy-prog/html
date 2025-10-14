@@ -2,7 +2,7 @@
 <?php
 
 require_once 'BaseController.php';
-require_once '../models/User.php';
+require_once __DIR__ . '/../models/User.php';
 
 class UserController extends BaseController {
     private $userModel;

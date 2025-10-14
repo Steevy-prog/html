@@ -1,77 +1,57 @@
 <?php
-/**
- * PHPUnit Bootstrap File
- * Configuration et initialisation pour les tests
- */
+// tests/bootstrap.php
 
-// Autoloader Composer
+// Define test environment constant if not already defined
+if (!defined('TEST_MODE')) {
+    define('TEST_MODE', true);
+}
+
+// Set up autoloading
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Définir l'environnement de test
-define('TESTING', true);
+// Set up error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-// Configuration de la base de données de test
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'Archiva_test');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_CHARSET', 'utf8mb4');
+// Set up CLI environment
+if (php_sapi_name() === 'cli') {
+    $_SERVER['REQUEST_METHOD'] = 'CLI';
+    $_SERVER['HTTP_ACCEPT'] = 'application/json';
+    $_SERVER['CONTENT_TYPE'] = 'application/json';
+}
 
-// Note: Cannot override built-in PHP functions like header() and http_response_code()
-// For testing, use output buffering or PHPUnit's runInSeparateProcess annotation
-// to prevent "headers already sent" errors
-
-// Classe Database de test avec possibilité de mock
-class TestDatabase {
-    private static $instance = null;
-    private $connection;
-    private static $mockConnection = null;
-    
-    public static function setMockConnection($mock) {
-        self::$mockConnection = $mock;
-    }
-    
-    public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-    
-    private function __construct() {
-        if (self::$mockConnection !== null) {
-            $this->connection = self::$mockConnection;
-            return;
+// Set up test database connection
+if (!function_exists('getDB')) {
+    function getDB(): PDO
+    {
+        static $db = null;
+        
+        if ($db === null) {
+            try {
+                $db = new PDO('sqlite::memory:');
+                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $db->exec('PRAGMA foreign_keys = ON;');
+                
+                // Create test tables
+                $db->exec("
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username VARCHAR(50) UNIQUE NOT NULL,
+                        email VARCHAR(100) UNIQUE NOT NULL,
+                        password VARCHAR(255) NOT NULL,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                ");
+                
+            } catch (PDOException $e) {
+                throw new Exception("Test database connection failed: " . $e->getMessage());
+            }
         }
         
-        try {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
-            $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-            ];
-            
-            $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
-        } catch (PDOException $e) {
-            error_log("Test Database Connection Error: " . $e->getMessage());
-            throw $e;
-        }
-    }
-    
-    public function getConnection() {
-        return $this->connection;
-    }
-    
-    public static function reset() {
-        self::$instance = null;
-        self::$mockConnection = null;
+        return $db;
     }
 }
 
-// Test-specific database function to avoid conflicts with main application
-if (!function_exists('getTestDB')) {
-    function getTestDB() {
-        return TestDatabase::getInstance()->getConnection();
-    }
-}
+// Set up any other test environment configurations
+error_reporting(E_ALL);
+ini_set('display_errors', '1');

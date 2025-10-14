@@ -1,6 +1,6 @@
 // Prosit/src/services/apiService.ts
 
-const API_BASE_URL = 'http://localhost/backend/routes/api.php';
+const API_BASE_URL = 'http://localhost:8000/backend/routes/api.php';
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -19,8 +19,10 @@ class ApiService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseURL}${endpoint}`;
-    
+    // Ensure endpoint starts with a slash
+    const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${this.baseURL}${normalizedEndpoint}`;
+
     const config: RequestInit = {
       ...options,
       credentials: 'include', // Important pour les sessions PHP
@@ -33,11 +35,11 @@ class ApiService {
     try {
       const response = await fetch(url, config);
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Une erreur est survenue');
       }
-      
+
       return data;
     } catch (error) {
       console.error('API Error:', error);
@@ -48,7 +50,7 @@ class ApiService {
   // ============================================
   // AUTH ENDPOINTS
   // ============================================
-  
+
   async login(email: string, password: string) {
     return this.request('/auth/login', {
       method: 'POST',
@@ -86,7 +88,7 @@ class ApiService {
   // ============================================
   // CER ENDPOINTS
   // ============================================
-  
+
   async getCers(params?: {
     limit?: number;
     offset?: number;
@@ -97,7 +99,7 @@ class ApiService {
     const queryString = new URLSearchParams(
       params as Record<string, string>
     ).toString();
-    
+
     return this.request(`/cers?${queryString}`, {
       method: 'GET',
     });
@@ -152,7 +154,7 @@ class ApiService {
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    
+
     return this.request(`/cers/search?${params}`, {
       method: 'GET',
     });
@@ -163,7 +165,7 @@ class ApiService {
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    
+
     return this.request(`/users/me/cers?${params}`, {
       method: 'GET',
     });
@@ -172,13 +174,13 @@ class ApiService {
   // ============================================
   // FAVORITES ENDPOINTS
   // ============================================
-  
+
   async getFavorites(limit: number = 10, offset: number = 0) {
     const params = new URLSearchParams({
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    
+
     return this.request(`/favorites?${params}`, {
       method: 'GET',
     });
@@ -206,7 +208,7 @@ class ApiService {
   // ============================================
   // USER PREFERENCES
   // ============================================
-  
+
   async getPreferences() {
     return this.request('/users/me/preferences', {
       method: 'GET',
@@ -229,7 +231,7 @@ class ApiService {
   // ============================================
   // CATEGORIES, TAGS, UNIVERSITIES
   // ============================================
-  
+
   async getCategories() {
     return this.request('/categories', {
       method: 'GET',
@@ -251,7 +253,7 @@ class ApiService {
   // ============================================
   // FILE UPLOAD
   // ============================================
-  
+
   async uploadFile(file: File, cerId?: number) {
     const formData = new FormData();
     formData.append('file', file);
@@ -259,21 +261,21 @@ class ApiService {
       formData.append('cer_id', cerId.toString());
     }
 
-    const url = 'http://localhost/backend/routes/upload.php';
-    
+    const url = 'http://localhost:8000/backend/routes/upload.php';
+
     try {
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
         credentials: 'include',
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Erreur lors de l\'upload');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Upload Error:', error);
@@ -282,8 +284,8 @@ class ApiService {
   }
 
   async deleteFile(filePath: string) {
-    const url = 'http://localhost/backend/routes/upload.php';
-    
+    const url = 'http://localhost:8000/backend/routes/upload.php';
+
     try {
       const response = await fetch(url, {
         method: 'DELETE',
@@ -293,13 +295,13 @@ class ApiService {
         body: JSON.stringify({ file_path: filePath }),
         credentials: 'include',
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Erreur lors de la suppression');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Delete Error:', error);
@@ -310,7 +312,7 @@ class ApiService {
   // ============================================
   // NOTIFICATIONS
   // ============================================
-  
+
   async getNotifications(params?: {
     limit?: number;
     offset?: number;
@@ -320,7 +322,7 @@ class ApiService {
     if (params?.limit) queryParams.append('limit', params.limit.toString());
     if (params?.offset) queryParams.append('offset', params.offset.toString());
     if (params?.unread_only) queryParams.append('unread_only', 'true');
-    
+
     return this.request(`/notifications?${queryParams}`, {
       method: 'GET',
     });
@@ -347,7 +349,7 @@ class ApiService {
   // ============================================
   // COMMENTS & RATINGS
   // ============================================
-  
+
   async getComments(cerId: number) {
     return this.request(`/cers/${cerId}/comments`, {
       method: 'GET',

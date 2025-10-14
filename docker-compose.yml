@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # Vos services existants
+  app:
+    build: .
+    container_name: archiva-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=archiva
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+    depends_on:
+      - db
+    networks:
+      - archiva-network
+
+  db:
+    image: mysql:8.0
+    container_name: archiva-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: archiva
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    networks:
+      - archiva-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: archiva-pma
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    ports:
+      - "8080:80"
+    networks:
+      - archiva-network
+
+  # Service Jenkins
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: root
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    networks:
+      - archiva-network
+
+networks:
+  archiva-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+  jenkins_home:

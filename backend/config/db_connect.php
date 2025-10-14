@@ -5,22 +5,25 @@
 
 // Configuration de la base de données
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'Archiva');
+define('DB_NAME', 'rchiva');
 define('DB_USER', 'root'); // Par défaut sur XAMPP
 define('DB_PASS', 'YuxjM(-bL[R!25nd'); // Mot de passe personnalisé
 define('DB_CHARSET', 'utf8mb4');
 
-// Configuration CORS pour React
-header('Access-Control-Allow-Origin: *'); // Port par défaut de Vite
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Allow-Credentials: true');
-header('Content-Type: application/json; charset=utf-8');
+// Only send headers if not in CLI mode and headers not already sent
+if (php_sapi_name() !== 'cli' && !headers_sent()) {
+    // Configuration CORS pour React
+    header('Access-Control-Allow-Origin: *'); // Port par défaut de Vite
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Credentials: true');
+    header('Content-Type: application/json; charset=utf-8');
 
-// Gérer les requêtes OPTIONS (preflight)
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+    // Gérer les requêtes OPTIONS (preflight)
+    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        http_response_code(200);
+        exit();
+    }
 }
 
 class Database {
@@ -29,13 +32,19 @@ class Database {
     
     private function __construct() {
         try {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+            // Force using MariaDB driver and add debug info
+            error_log('DB Connection attempt - Host: ' . DB_HOST . ', DB: ' . DB_NAME . ', User: ' . DB_USER);
+            $dsn = "mysql:host=127.0.0.1;port=3306;dbname=" . DB_NAME . ";charset=" . DB_CHARSET . ";";
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",
+                PDO::ATTR_TIMEOUT => 5, // Add timeout
+                PDO::ATTR_PERSISTENT => false // Don't use persistent connections
             ];
+            
+            error_log('DSN: ' . $dsn);
             
             $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
@@ -70,9 +79,6 @@ class Database {
 }
 
 // Fonction utilitaire pour obtenir la connexion
-function getDB() {
-    return Database::getInstance()->getConnection();
-}
 
 // Fonction pour gérer les erreurs JSON
 function jsonError($message, $code = 400, $data = null) {
